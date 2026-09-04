@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ส่งโครงการ - ระบบจัดการโครงการสิ่งประดิษฐ์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white relative">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800 py-3.5 px-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="login.html" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition">
+                    <i class="fa-solid fa-lightbulb text-slate-950 text-xl"></i>
+                </div>
+                <span class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">ระบบจัดการโครงการสิ่งประดิษฐ์</span>
+            </a>
+            <div class="flex items-center gap-1 sm:gap-2 text-sm font-medium">
+                <a href="login.html" class="hover:bg-slate-800 text-slate-300 hover:text-white px-3.5 py-2 rounded-xl transition flex items-center gap-2"><i class="fa-solid fa-user-lock text-xs"></i> <span>เข้าสู่ระบบ</span></a>
+                <a href="drive.html" class="hover:bg-slate-800 text-slate-300 hover:text-white px-3.5 py-2 rounded-xl transition flex items-center gap-2"><i class="fa-solid fa-folder-open text-xs"></i> <span>คลังไฟล์</span></a>
+                <a href="projects.html" class="bg-indigo-600 text-white px-3.5 py-2 rounded-xl shadow-lg shadow-indigo-600/30 font-semibold flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-xs"></i> <span>ส่งโครงการ</span></a>
+                <a href="/api-docs" target="_blank" class="border border-slate-700 hover:border-slate-500 hover:bg-slate-800 text-slate-300 px-3 py-2 rounded-xl transition flex items-center gap-2 ml-2"><i class="fa-solid fa-code text-indigo-400 text-xs"></i> <span class="hidden sm:inline">Swagger API</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-8 w-full space-y-8 z-10">
+        
+        <!-- Form Section -->
+        <section class="bg-slate-800/60 backdrop-blur-xl border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <h2 class="text-xl font-bold text-white border-b border-slate-700/80 pb-4 mb-6 flex items-center gap-3">
+                <span class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20"><i class="fa-solid fa-pen-to-square"></i></span>
+                แบบฟอร์มส่งโครงการสิ่งประดิษฐ์ (พร้อมแนบรูปภาพ)
+            </h2>
+            
+            <form id="projectForm" class="space-y-6" onsubmit="handleFormSubmit(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">ชื่อโครงการสิ่งประดิษฐ์ <span class="text-rose-400">*</span></label>
+                        <input type="text" id="projectName" placeholder="เช่น เครื่องรดน้ำอัตโนมัติสมาร์ตฟาร์ม" required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">ชื่อผู้จัดทำ <span class="text-rose-400">*</span></label>
+                        <input type="text" id="studentName" placeholder="เช่น นายสมชาย ใจดี" required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">ชื่อพ่อ (Father's Name) <span class="text-rose-400">*</span></label>
+                        <input type="text" id="fatherName" placeholder="เช่น นายสมศักดิ์ ใจดี" required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">ชื่อองค์การสื่อประดิษฐ์ <span class="text-rose-400">*</span></label>
+                        <input type="text" id="organizationName" placeholder="เช่น องค์การสื่อประดิษฐ์แห่งประเทศไทย" required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500">
+                    </div>
+                </div>
+
+                <!-- Image Upload Field -->
+                <div class="border-t border-slate-700/60 pt-5">
+                    <label class="block text-xs font-semibold text-slate-300 mb-2">แนบรูปภาพสิ่งประดิษฐ์ ( Upload Image )</label>
+                    <div class="flex flex-col sm:flex-row items-center gap-4 p-4 border border-dashed border-slate-700 rounded-xl bg-slate-900/40">
+                        <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-image text-indigo-400"></i> เลือกรูปภาพ...
+                            <input type="file" id="projectImage" accept="image/*" class="hidden" onchange="previewImage(this)">
+                        </label>
+                        <div id="imagePreviewContainer" class="hidden flex items-center gap-3">
+                            <img id="imagePreview" src="" alt="Preview" class="w-16 h-16 object-cover rounded-lg border border-indigo-500/50 shadow">
+                            <span id="fileName" class="text-xs text-indigo-300 font-medium"></span>
+                        </div>
+                        <span id="noImageText" class="text-xs text-slate-500">ยังไม่ได้เลือกรูปภาพ (ตัวอย่างจะแสดงเมื่อเลือกรูป)</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-700/60 pt-6">
+                    <h3 class="font-bold text-slate-200 text-sm mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-indigo-400"></i> รายละเอียดโครงการ 5 หัวข้อ
+                    </h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">1. หลักการและเหตุผล</label>
+                            <textarea id="detail1" rows="2" placeholder="ระบุหลักการและเหตุผลในการสร้างสิ่งประดิษฐ์..." required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">2. วัตถุประสงค์</label>
+                            <textarea id="detail2" rows="2" placeholder="ระบุวัตถุประสงค์ของโครงการ..." required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">3. อุปกรณ์ที่ใช้</label>
+                            <textarea id="detail3" rows="2" placeholder="ระบุรายการอุปกรณ์ที่ใช้ในการประดิษฐ์..." required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">4. ขั้นตอนการทำงาน</label>
+                            <textarea id="detail4" rows="2" placeholder="ระบุขั้นตอนการทำงานและการใช้งาน..." required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1.5">5. ประโยชน์ที่ได้รับ</label>
+                            <textarea id="detail5" rows="2" placeholder="ระบุประโยชน์ที่จะได้รับจากสิ่งประดิษฐ์นี้..." required class="w-full px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none text-white transition placeholder-slate-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-indigo-600/30 active:scale-95 transition duration-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> บันทึกและส่งโครงการ
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Project List Section -->
+        <section class="bg-slate-800/60 backdrop-blur-xl border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <h2 class="text-xl font-bold text-white border-b border-slate-700/80 pb-4 mb-6 flex items-center gap-3">
+                <span class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20"><i class="fa-solid fa-box-archive"></i></span>
+                รายการโครงการสิ่งประดิษฐ์ที่ส่งแล้ว
+            </h2>
+
+            <div id="projectList" class="space-y-4">
+                <!-- Demo Card -->
+                <div class="border border-slate-700/80 rounded-xl bg-slate-900/60 overflow-hidden shadow-sm" id="project-demo-1">
+                    <div class="p-4 bg-slate-800/80 flex justify-between items-center cursor-pointer hover:bg-slate-800 transition" onclick="toggleCollapse('demo-details-1', 'arrow-1')">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold px-2.5 py-1 rounded-lg">ส่งแล้ว</span>
+                            <span class="font-bold text-white text-base">โครงการสิ่งประดิษฐ์เครื่องรดน้ำอัตโนมัติ</span>
+                            <span class="text-xs text-slate-400 hidden sm:inline">(ผู้จัดทำ: นายสมชาย ใจดี)</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-indigo-400 font-medium hidden sm:inline">รายละเอียด</span>
+                            <i id="arrow-1" class="fa-solid fa-chevron-up text-slate-400 transition-transform duration-300"></i>
+                        </div>
+                    </div>
+                    
+                    <div id="demo-details-1" class="p-5 space-y-4 border-t border-slate-700/50 bg-slate-900/40 text-sm text-slate-300">
+                        <!-- Image Area -->
+                        <div class="flex flex-col sm:flex-row gap-4 items-start bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
+                            <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60" alt="สิ่งประดิษฐ์" class="w-full sm:w-48 h-32 object-cover rounded-lg border border-slate-600">
+                            <div class="space-y-1.5 text-xs text-slate-300">
+                                <p class="text-indigo-300 font-semibold text-sm">รูปถ่ายสิ่งประดิษฐ์ต้นแบบ</p>
+                                <p><strong>ชื่อผู้จัดทำ:</strong> นายสมชาย ใจดี</p>
+                                <p><strong>ชื่อพ่อ:</strong> นายสมศักดิ์ ใจดี</p>
+                                <p><strong>องค์การสื่อประดิษฐ์:</strong> องค์การสื่อประดิษฐ์แห่งประเทศไทย</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-slate-300">
+                            <p><strong class="text-white">1. หลักการและเหตุผล:</strong> ช่วยทุ่นแรงและประหยัดเวลารดน้ำต้นไม้</p>
+                            <p><strong class="text-white">2. วัตถุประสงค์:</strong> เพื่อสร้างระบบรดน้ำอัตโนมัติที่ควบคุมด้วยเซนเซอร์</p>
+                            <p><strong class="text-white">3. อุปกรณ์ที่ใช้:</strong> บอร์ด Microcontroller, เซนเซอร์วัดความชื้น, ปั๊มน้ำ</p>
+                            <p><strong class="text-white">4. ขั้นตอนการทำงาน:</strong> เซนเซอร์ตรวจวัดความชื้นดิบ แล้วสั่งให้ปั๊มน้ำทำงานเมื่อดินแห้ง</p>
+                            <p><strong class="text-white">5. ประโยชน์ที่ได้รับ:</strong> ต้นไม้ได้รับการรดน้ำอย่างสม่ำเสมอ และประหยัดน้ำ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        let currentUploadedImageBase64 = null;
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUploadedImageBase64 = e.target.result;
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('fileName').textContent = input.files[0].name;
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                    document.getElementById('noImageText').classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function toggleCollapse(detailsId, arrowId) {
+            const detailsElement = document.getElementById(detailsId);
+            const arrowElement = document.getElementById(arrowId);
+
+            if (detailsElement.classList.contains('hidden')) {
+                detailsElement.classList.remove('hidden');
+                arrowElement.classList.remove('rotate-180');
+            } else {
+                detailsElement.classList.add('hidden');
+                arrowElement.classList.add('rotate-180');
+            }
+        }
+
+        let projectCount = 2;
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const pName = document.getElementById('projectName').value;
+            const sName = document.getElementById('studentName').value;
+            const fName = document.getElementById('fatherName').value;
+            const oName = document.getElementById('organizationName').value;
+            const d1 = document.getElementById('detail1').value;
+            const d2 = document.getElementById('detail2').value;
+            const d3 = document.getElementById('detail3').value;
+            const d4 = document.getElementById('detail4').value;
+            const d5 = document.getElementById('detail5').value;
+
+            const newId = projectCount++;
+            const detailsId = `details-${newId}`;
+            const arrowId = `arrow-${newId}`;
+
+            // Handle Image Display
+            const imgHtml = currentUploadedImageBase64 
+                ? `<img src="${currentUploadedImageBase64}" class="w-full sm:w-48 h-32 object-cover rounded-lg border border-indigo-500/50 shadow">`
+                : `<div class="w-full sm:w-48 h-32 bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 text-xs border border-slate-700"><i class="fa-solid fa-image text-2xl"></i></div>`;
+
+            const newProjectCard = `
+                <div class="border border-slate-700/80 rounded-xl bg-slate-900/60 overflow-hidden shadow-sm animate-fade-in">
+                    <div class="p-4 bg-slate-800/80 flex justify-between items-center cursor-pointer hover:bg-slate-800 transition" onclick="toggleCollapse('${detailsId}', '${arrowId}')">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold px-2.5 py-1 rounded-lg">ส่งแล้ว</span>
+                            <span class="font-bold text-white text-base">${pName}</span>
+                            <span class="text-xs text-slate-400 hidden sm:inline">(ผู้จัดทำ: ${sName})</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-indigo-400 font-medium hidden sm:inline">รายละเอียด</span>
+                            <i id="${arrowId}" class="fa-solid fa-chevron-up text-slate-400 transition-transform duration-300"></i>
+                        </div>
+                    </div>
+                    
+                    <div id="${detailsId}" class="p-5 space-y-4 border-t border-slate-700/50 bg-slate-900/40 text-sm text-slate-300">
+                        <div class="flex flex-col sm:flex-row gap-4 items-start bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
+                            ${imgHtml}
+                            <div class="space-y-1.5 text-xs text-slate-300">
+                                <p class="text-indigo-300 font-semibold text-sm">รายละเอียดผู้จัดทำ</p>
+                                <p><strong>ชื่อผู้จัดทำ:</strong> ${sName}</p>
+                                <p><strong>ชื่อพ่อ:</strong> ${fName}</p>
+                                <p><strong>องค์การสื่อประดิษฐ์:</strong> ${oName}</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-slate-300">
+                            <p><strong class="text-white">1. หลักการและเหตุผล:</strong> ${d1}</p>
+                            <p><strong class="text-white">2. วัตถุประสงค์:</strong> ${d2}</p>
+                            <p><strong class="text-white">3. อุปกรณ์ที่ใช้:</strong> ${d3}</p>
+                            <p><strong class="text-white">4. ขั้นตอนการทำงาน:</strong> ${d4}</p>
+                            <p><strong class="text-white">5. ประโยชน์ที่ได้รับ:</strong> ${d5}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('projectList').insertAdjacentHTML('afterbegin', newProjectCard);
+            alert('บันทึกและส่งโครงการพร้อมรูปภาพเรียบร้อยแล้ว!');
+            
+            // Reset Form & Preview
+            document.getElementById('projectForm').reset();
+            currentUploadedImageBase64 = null;
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            document.getElementById('noImageText').classList.remove('hidden');
+        }
+    </script>
+
+    <footer class="py-6 border-t border-slate-800 text-center text-xs text-slate-500">
+        &copy; 2026 ระบบจัดการโครงการสิ่งประดิษฐ์ — All Rights Reserved.
+    </footer>
+</body>
+</html>

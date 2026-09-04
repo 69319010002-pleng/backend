@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: ระบบจัดการโครงการสิ่งประดิษฐ์ (Invention Project Management API)
+  description: API Documentation อธิบายการทำงานของระบบสิ่งประดิษฐ์แบบสมบูรณ์ ครบ 10 Endpoints
+  version: 1.0.0
+
+paths:
+  /auth/register:
+    post:
+      summary: 1. สมัครสมาชิก
+      description: สมัครสมาชิกใหม่เพื่อรับสิทธิ์เข้าใช้งานระบบ
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "student01"
+                password:
+                  type: string
+                  example: "password123"
+                email:
+                  type: string
+                  example: "student@example.com"
+      responses:
+        '201':
+          description: สมัครสมาชิกสำเร็จ
+
+  /auth/login:
+    post:
+      summary: 2. เข้าสู่ระบบ (Login)
+      description: เข้าสู่ระบบเพื่อรับสิทธิ์เข้าใช้งานหน้าจัดการโครงการและไฟล์
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "student01"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        '200':
+          description: เข้าสู่ระบบสำเร็จ
+
+  /files:
+    get:
+      summary: 3. แสดงรายการไฟล์ที่เคยอัปโหลด
+      description: แสดงหน้าและรายการไฟล์ทั้งหมดที่เคยอัปโหลดไว้ในระบบ (ลักษณะคล้าย Google Drive)
+      responses:
+        '200':
+          description: ดึงข้อมูลรายการไฟล์สำเร็จ
+
+  /files/upload:
+    post:
+      summary: 4. อัปโหลดไฟล์เอกสารโครงการ
+      description: อัปโหลดไฟล์เอกสาร รูปภาพ หรือไฟล์รายงานเข้าสู่ระบบ
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: เลือกไฟล์ที่จะอัปโหลด
+      responses:
+        '201':
+          description: อัปโหลดไฟล์สำเร็จ
+
+  /projects:
+    post:
+      summary: 5. ส่งโครงการสิ่งประดิษฐ์
+      description: กรอกข้อมูลและบันทึกโครงการสิ่งประดิษฐ์ พร้อมรายละเอียดครบ 5 หัวข้อ
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                projectName:
+                  type: string
+                  description: ชื่อโครงการสิ่งประดิษฐ์
+                  example: "โครงการสิ่งประดิษฐ์เครื่องรดน้ำอัตโนมัติ"
+                studentName:
+                  type: string
+                  description: ชื่อผู้จัดทำ
+                  example: "นายสมชาย ใจดี"
+                fatherName:
+                  type: string
+                  description: ชื่อของพ่อ (Father Name)
+                  example: "นายสมศักดิ์ ใจดี"
+                organizationName:
+                  type: string
+                  description: ชื่อองค์การสื่อประดิษฐ์
+                  example: "องค์การสื่อประดิษฐ์แห่งประเทศไทย"
+                details:
+                  type: object
+                  description: รายละเอียดประกอบด้วยทั้งหมด 5 หัวข้อ
+                  properties:
+                    detail1:
+                      type: string
+                      description: หัวข้อที่ 1
+                      example: "หลักการและเหตุผล"
+                    detail2:
+                      type: string
+                      description: หัวข้อที่ 2
+                      example: "วัตถุประสงค์"
+                    detail3:
+                      type: string
+                      description: หัวข้อที่ 3
+                      example: "อุปกรณ์ที่ใช้"
+                    detail4:
+                      type: string
+                      description: หัวข้อที่ 4
+                      example: "ขั้นตอนการทำงาน"
+                    detail5:
+                      type: string
+                      description: หัวข้อที่ 5
+                      example: "ประโยชน์ที่ได้รับ"
+      responses:
+        '201':
+          description: บันทึกข้อมูลโครงการสำเร็จ
+
+    get:
+      summary: 6. ดึงรายการโครงการทั้งหมด
+      description: เรียกดูรายการโครงการสิ่งประดิษฐ์ทั้งหมดที่เคยบันทึกไว้ในระบบ
+      responses:
+        '200':
+          description: ดึงรายการโครงการทั้งหมดสำเร็จ
+
+  /projects/{projectId}:
+    get:
+      summary: 7. ดูรายละเอียดโครงการรายบุคคล
+      description: เรียกดูรายละเอียดแบบเต็มของโครงการสิ่งประดิษฐ์ตาม ID
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "proj-001"
+      responses:
+        '200':
+          description: ดึงข้อมูลรายละเอียดโครงการสำเร็จ
+
+    put:
+      summary: 8. แก้ไขข้อมูลโครงการสิ่งประดิษฐ์
+      description: อัปเดต/แก้ไขข้อมูลรายละเอียดของโครงการสิ่งประดิษฐ์
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "proj-001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                projectName:
+                  type: string
+                  example: "โครงการสิ่งประดิษฐ์เครื่องรดน้ำอัตโนมัติ (แก้ไขเพิ่มเติม)"
+      responses:
+        '200':
+          description: แก้ไขข้อมูลโครงการสำเร็จ
+
+    delete:
+      summary: 9. ลบโครงการสิ่งประดิษฐ์
+      description: ลบข้อมูลโครงการสิ่งประดิษฐ์ออกจากระบบ
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "proj-001"
+      responses:
+        '200':
+          description: ลบโครงการสำเร็จ
+
+  /projects/{projectId}/collapse:
+    put:
+      summary: 10. ปุ่มพับลง / ซ่อนรายละเอียดโครงการ
+      description: สั่งการพับเก็บ/ซ่อนหน้าต่างรายละเอียดเมื่อทำขั้นตอนสำเร็จเรียบร้อยแล้ว
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "proj-001"
+      responses:
+        '200':
+          description: พับเก็บรายละเอียดโครงการสำเร็จ
